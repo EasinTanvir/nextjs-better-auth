@@ -1,6 +1,8 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./prisma";
+import { customSession } from "better-auth/plugins";
+import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -27,4 +29,17 @@ export const auth = betterAuth({
       },
     },
   },
+
+  plugins: [
+    nextCookies(),
+    customSession(async ({ user, session }) => {
+      console.log("user ===", user);
+      return {
+        user: {
+          ...user,
+        },
+        session,
+      };
+    }),
+  ],
 });
