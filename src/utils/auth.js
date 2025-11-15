@@ -11,6 +11,8 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
+    // need to verify email before signin
+    requireEmailVerification: true,
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
@@ -42,4 +44,14 @@ export const auth = betterAuth({
       };
     }),
   ],
+  emailVerification: {
+    sendOnSignUp: true,
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+      await sendEmail({
+        to: user.email,
+        subject: "Verify your email address",
+        text: `Click the link to verify your email: ${url}`,
+      });
+    },
+  },
 });

@@ -23,7 +23,16 @@ export default function LoginForm() {
 
         rememberMe: true,
       },
-      {}
+      {
+        onError: (ctx) => {
+          // Handle the error
+          if (ctx.error.status === 403) {
+            alert("Please verify your email address");
+          }
+          //you can also show the original error message
+          alert(ctx.error.message);
+        },
+      }
     );
     console.log("data", data);
     console.log("error", error);
