@@ -1,4 +1,4 @@
-// LoginForm.js
+"use client";
 import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
