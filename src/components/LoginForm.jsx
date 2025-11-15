@@ -2,6 +2,7 @@
 import { authClient } from "@/utils/auth-client";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
   const {
@@ -27,10 +28,12 @@ export default function LoginForm() {
         onError: (ctx) => {
           // Handle the error
           if (ctx.error.status === 403) {
-            alert("Please verify your email address");
+            toast.error("Please verify your email address");
+            return;
           }
           //you can also show the original error message
-          alert(ctx.error.message);
+          toast.error(ctx.error.message);
+          console.log("err", ctx);
         },
       }
     );

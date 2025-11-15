@@ -3,6 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./prisma";
 import { customSession } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
+import { createAuthMiddleware, APIError } from "better-auth/api";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -53,5 +54,23 @@ export const auth = betterAuth({
         text: `Click the link to verify your email: ${url}`,
       });
     },
+  },
+
+  hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      console.log("ctx", ctx);
+      if (ctx.path === "/sign-in/email") {
+        const { email, password } = ctx.body;
+
+        const user = await prisma.user.findUnique({ where: { email } });
+
+        if (!user) {
+          throw new APIError("NOT_FOUND", {
+            message: "No User Found",
+            code: "NOT_FOUND",
+          });
+        }
+      }
+    }),
   },
 });
