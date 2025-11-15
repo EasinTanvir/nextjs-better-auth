@@ -21,6 +21,7 @@ export const auth = betterAuth({
     updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)
   },
 
+  // additional field for user
   user: {
     additionalFields: {
       role: {
@@ -41,7 +42,7 @@ export const auth = betterAuth({
         user: {
           ...user,
         },
-        session,
+        session: { ...session, test: "Tanvir" },
       };
     }),
   ],
