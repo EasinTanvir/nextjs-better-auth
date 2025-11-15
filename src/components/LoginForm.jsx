@@ -1,4 +1,6 @@
 "use client";
+import { authClient } from "@/utils/auth-client";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
@@ -7,9 +9,24 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const router = useRouter();
+  const onSubmit = async (res) => {
+    const { email, password } = res;
 
-  const onSubmit = (data) => {
-    console.log("Login Data:", data);
+    const { data, error } = await authClient.signIn.email(
+      {
+        email,
+
+        password,
+
+        callbackURL: "/profile",
+
+        rememberMe: true,
+      },
+      {}
+    );
+    console.log("data", data);
+    console.log("error", error);
   };
 
   return (

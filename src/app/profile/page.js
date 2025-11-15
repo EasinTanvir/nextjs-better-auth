@@ -10,6 +10,8 @@ const ProfilePage = async () => {
   console.log("session", session);
   return (
     <div>
+      <h3 className="text-2xl">{session?.user?.name}</h3>
+      <h3 className="text-2xl">{session?.user?.email}</h3>
       <Profile />
     </div>
   );

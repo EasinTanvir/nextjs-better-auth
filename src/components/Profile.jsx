@@ -1,9 +1,11 @@
 "use client";
 
 import { authClient } from "@/utils/auth-client";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Profile = () => {
+  const router = useRouter();
   const {
     data: session,
     isPending, //loading state
@@ -13,7 +15,28 @@ const Profile = () => {
 
   console.log("session", session);
 
-  return <div>Profile</div>;
+  const logoutHandler = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/login"); // redirect to login page
+        },
+      },
+    });
+  };
+
+  return (
+    <div>
+      {session && (
+        <button
+          onClick={logoutHandler}
+          className="bg-red-700 text-white p-2 rounded-2xl"
+        >
+          Logout
+        </button>
+      )}
+    </div>
+  );
 };
 
 export default Profile;
