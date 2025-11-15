@@ -10,6 +10,7 @@ export const auth = betterAuth({
     provider: "mongodb",
   }),
   emailAndPassword: {
+    minPasswordLength: 6,
     enabled: true,
     autoSignIn: true,
     // need to verify email before signin
@@ -36,7 +37,6 @@ export const auth = betterAuth({
   plugins: [
     nextCookies(),
     customSession(async ({ user, session }) => {
-      console.log("user ===", user);
       return {
         user: {
           ...user,
@@ -48,17 +48,12 @@ export const auth = betterAuth({
   emailVerification: {
     sendOnSignUp: true,
     sendVerificationEmail: async ({ user, url, token }, request) => {
-      await sendEmail({
-        to: user.email,
-        subject: "Verify your email address",
-        text: `Click the link to verify your email: ${url}`,
-      });
+      console.log("url", url);
     },
   },
 
   hooks: {
     before: createAuthMiddleware(async (ctx) => {
-      console.log("ctx", ctx);
       if (ctx.path === "/sign-in/email") {
         const { email, password } = ctx.body;
 

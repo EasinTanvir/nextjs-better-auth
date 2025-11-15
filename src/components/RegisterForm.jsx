@@ -16,7 +16,7 @@ export default function RegisterForm() {
         email,
         password,
         name,
-        callbackURL: "/profile",
+        callbackURL: "/verify",
       },
       {
         onRequest: (ctx) => {
