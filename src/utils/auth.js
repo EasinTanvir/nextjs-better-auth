@@ -12,10 +12,18 @@ export const auth = betterAuth({
   emailAndPassword: {
     minPasswordLength: 6,
     enabled: true,
-    autoSignIn: true,
+    autoSignIn: false,
     // need to verify email before signin
     requireEmailVerification: true,
   },
+
+  emailVerification: {
+    sendOnSignUp: true,
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+      console.log("url", url);
+    },
+  },
+
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)
@@ -46,12 +54,6 @@ export const auth = betterAuth({
       };
     }),
   ],
-  emailVerification: {
-    sendOnSignUp: true,
-    sendVerificationEmail: async ({ user, url, token }, request) => {
-      console.log("url", url);
-    },
-  },
 
   hooks: {
     before: createAuthMiddleware(async (ctx) => {

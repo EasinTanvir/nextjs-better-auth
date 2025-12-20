@@ -1,6 +1,7 @@
 "use client";
 import { authClient } from "@/utils/auth-client";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export default function RegisterForm() {
   const {
@@ -16,16 +17,17 @@ export default function RegisterForm() {
         email,
         password,
         name,
-        callbackURL: "/verify",
+        callbackURL: "/verify-email",
       },
       {
         onRequest: (ctx) => {
           console.log("onRequest", ctx);
         },
         onSuccess: (ctx) => {
-          console.log("onSuccess", ctx);
+          toast.success("Registration Successful");
         },
         onError: (ctx) => {
+          toast.error(ctx.error.message || "Registration failed");
           console.log("error", ctx);
         },
       }
